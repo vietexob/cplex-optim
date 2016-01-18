@@ -2,6 +2,8 @@ import ilog.concert.*;
 import ilog.cplex.*;
 
 public class TravelingSalesman {
+	// The problem: https://www.youtube.com/watch?v=QzOLL2tUXKE
+	
 	public static void main(String[] args) {
 		model(28);
 	}

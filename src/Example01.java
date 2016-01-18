@@ -5,6 +5,8 @@ import ilog.concert.*; // for model specification
 import ilog.cplex.*; // for solving model
 
 public class Example01 {
+	// The problem: https://www.youtube.com/watch?v=sf59_7r8QSY
+	
 	public static void main(String[] args) {
 		model01();
 	}
