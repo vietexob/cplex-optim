@@ -5,7 +5,7 @@ import ilog.concert.*;
 import ilog.cplex.*;
 
 /**
- * The Wagner diet problem (Kimbrough & Lau, p. 44).
+ * The Wagner diet problem (Kimbrough & Lau, 2016, p. 44).
  * 
  * @author trucvietle
  *
@@ -44,7 +44,7 @@ public class Wagner {
 			// Define an array of decision variables
 			IloNumVar[] x = new IloNumVar[n];
 			for(int i = 0; i < n; i++) {
-				// Initialize variable range from 0 to Infinity
+				// Define each variable's range from 0 to +Infinity
 				x[i] = model.numVar(0, Double.MAX_VALUE);
 			}
 			
@@ -75,7 +75,7 @@ public class Wagner {
 			boolean isSolved = model.solve();
 			if(isSolved) {
 				// Print out the objective function
-				System.out.println("obj_fun = " + model.getObjValue());
+				System.out.println("obj_val = " + model.getObjValue());
 				System.out.println();
 				
 				// Print out the decision variables

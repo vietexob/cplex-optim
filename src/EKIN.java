@@ -8,7 +8,6 @@ import ilog.cplex.*;
  * @author trucvietle
  *
  */
-
 public class EKIN {
 	public static void main(String[] args) throws IloException {
 		// Define the problem parameters (data)
@@ -90,16 +89,15 @@ public class EKIN {
 			// Solve the model
 			boolean isSolved = model.solve();
 			if(isSolved) {
-				System.out.println("obj_fun = " + model.getObjValue());
+				System.out.println("obj_val = " + model.getObjValue());
 				for(int i = 0; i < n; i++) {
 					for(int j = 0; j < m; j++) {
-						System.out.println("x[" + i + "," + j + "] = " + model.getValue(x[i][j]));
+						System.out.println("x[" + (i+1) + "," + (j+1) + "] = " + model.getValue(x[i][j]));
 					}
 				}
 			} else {
-				System.out.print("Model not solved.");
+				System.out.print("Model not solved :(");
 			}
-						
 		} catch(IloException ex) {
 			ex.printStackTrace();
 		}
