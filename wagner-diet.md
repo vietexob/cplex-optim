@@ -9,8 +9,8 @@ Given a livestock that needs to be fed with four (4) different nutrients: A, B, 
 **Minimize** 41x_1 + 35x_2 + 96x_3
 
 **Subject to**:
-* 2x_1 + 3x_2 + 7x_3 >= 1250
-* x_1 + x2 >= 250
-* 5x_1 + 3x_2 >= 900
-* 0.6x_1 + 0.25x_2 + x_3 >= 232.5
-* x_1, x_2, x_3 >= 0
+* 2x_1 + 3x_2 + 7x_3 >= 1250 (**A**)
+* x_1 + x2 >= 250 (**B**)
+* 5x_1 + 3x_2 >= 900 (**C**)
+* 0.6x_1 + 0.25x_2 + x_3 >= 232.5 (**D**)
+* x_1, x_2, x_3 >= 0 (non-negativity constraint)
