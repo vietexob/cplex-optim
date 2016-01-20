@@ -6,3 +6,4 @@ Given a livestock that needs to be fed with four (4) different nutrients: A, B, 
 
 **Constraints** -- Each nutrient (A, B, C, D) meets its minimum requirement.
 
+Minimize 41 * x_1 + 35 * x_2 + 96 * x_3
