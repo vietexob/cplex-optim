@@ -36,7 +36,8 @@ public class Farm {
 			IloNumVar[] x = new IloNumVar[n];
 			for(int i = 0; i < n; i++) {
 				// Define each variable's range from 0 to +Infinity
-				x[i] = model.numVar(0, Double.MAX_VALUE);
+//				x[i] = model.numVar(0, Double.MAX_VALUE);
+				x[i] = model.intVar(0, Integer.MAX_VALUE);
 			}
 			
 			// Define the objective function
