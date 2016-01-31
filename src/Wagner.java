@@ -11,6 +11,8 @@ import ilog.cplex.*;
  *
  */
 public class Wagner {
+	// Video tutorial: https://www.youtube.com/watch?v=oA86HCkCg5k
+	
 	public static void main(String[] args) {
 		int n = 3; // number of decision variables (types of grain)
 		int m = 4; // number of constraints (the ingredients)

@@ -49,6 +49,9 @@ public class Knapsack {
 			} else {
 				System.out.println("Model not solved :(");
 			}
+			
+			// Free the memory
+			model.end();
 		} catch(IloException ex) {
 			ex.printStackTrace();
 		}
