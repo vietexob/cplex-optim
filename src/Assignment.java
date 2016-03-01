@@ -1,5 +1,6 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,13 +20,13 @@ public class Assignment {
 	public static void main(String[] args) {
 		Integer[] num_taxis = {5, 10, 20, 25};
 		for(int a_num_taxi : num_taxis) {
-			String input_filename = "./data/sin/dist_mat_" + a_num_taxi + "_" + a_num_taxi + ".csv";
+			String inputFilename = "./data/sin/dist_mat_" + a_num_taxi + "_" + a_num_taxi + ".csv";
 			Map<Integer, Integer> rowNodeIdx = new HashMap<Integer, Integer>();
 			Map<Integer, Integer> colNodeIdx = new HashMap<Integer, Integer>();
 			double[][] distMatrix = new double[a_num_taxi][a_num_taxi];
 			
 			try {
-				BufferedReader br = new BufferedReader(new FileReader(input_filename));
+				BufferedReader br = new BufferedReader(new FileReader(inputFilename));
 				String line = null;
 				int rowCount = 0;
 				int taxiLocNode = 0;
@@ -65,12 +66,27 @@ public class Assignment {
 				br.close();
 				
 				int[][] assignment = solveModel(distMatrix);
+				Map<Integer, Integer> taxiLocOrigin = new HashMap<Integer, Integer>();
 				for(int i = 0; i < a_num_taxi; i++) {
 					for(int j = 0; j < a_num_taxi; j++) {
-						System.out.print(assignment[i][j] + " ");
+						if(assignment[i][j] == 1) {
+							int thisTaxiLocNode = rowNodeIdx.get(i);
+							int thisOriginNode = colNodeIdx.get(j);
+							taxiLocOrigin.put(thisTaxiLocNode, thisOriginNode);
+						}
 					}
-					System.out.println();
 				}
+				
+				// Write the matching as text file
+				String outputFilename = "./data/sin/assign_" + a_num_taxi + "_" + a_num_taxi + ".txt";
+				FileWriter fw = new FileWriter(outputFilename);
+				for(int taxiNode : taxiLocOrigin.keySet()) {
+					int originNode = taxiLocOrigin.get(taxiNode);
+					String strLine = taxiNode + ", " + originNode + "\n";
+					fw.write(strLine);
+				}
+				System.out.println("Written to file: " + outputFilename);
+				fw.close();
 			} catch(IOException ex) {
 				ex.printStackTrace();
 			}
