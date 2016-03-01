@@ -22,6 +22,7 @@ public class Assignment {
 			String input_filename = "./data/sin/dist_mat_" + a_num_taxi + "_" + a_num_taxi + ".csv";
 			Map<Integer, Integer> rowNodeIdx = new HashMap<Integer, Integer>();
 			Map<Integer, Integer> colNodeIdx = new HashMap<Integer, Integer>();
+			double[][] distMatrix = new double[a_num_taxi][a_num_taxi];
 			
 			try {
 				BufferedReader br = new BufferedReader(new FileReader(input_filename));
@@ -43,21 +44,112 @@ public class Assignment {
 						colCount++;
 						if(colCount == 1 && rowCount > 1) {
 							taxiLocNode = Integer.parseInt(token);
+						} else {
+							taxiLocNode = 0;
+						}
+						
+						if(taxiLocNode > 0) {
+							rowNodeIdx.put(rowCount-2, taxiLocNode);
 						}
 						
 						if(originNode > 0) {
-							System.out.println((colCount-2) + " : " + originNode);
+							colNodeIdx.put(colCount-2, originNode);
+						} else {
+							if(!token.isEmpty() && taxiLocNode == 0) {
+								double travelTime = Double.parseDouble(token);
+								distMatrix[rowCount-2][colCount-2] = travelTime;
+							}
 						}
 					}
-					if(taxiLocNode > 0) {
-						System.out.println((rowCount-2) + " : " + taxiLocNode);
-					}
 				}
-				System.out.println("---");
 				br.close();
+				
+				int[][] assignment = solveModel(distMatrix);
+				for(int i = 0; i < a_num_taxi; i++) {
+					for(int j = 0; j < a_num_taxi; j++) {
+						System.out.print(assignment[i][j] + " ");
+					}
+					System.out.println();
+				}
 			} catch(IOException ex) {
 				ex.printStackTrace();
 			}
 		}
+	}
+	
+	public static int[][] solveModel(double[][] distMatrix) {
+		int n = distMatrix[0].length;
+		int[][] assignment = new int[n][n];
+		
+		try {
+			// Define an empty model
+			IloCplex model = new IloCplex();
+			
+			// Define the binary variables
+			IloNumVar[][] x = new IloNumVar[n][n];
+			for(int i = 0; i < n; i++) {
+				for(int j = 0; j < n; j++) {
+					x[i][j] = model.boolVar();
+				}
+			}
+			
+			// Define the objective function
+			IloLinearNumExpr obj = model.linearNumExpr();
+			for(int i = 0; i < n; i++) {
+				for(int j = 0; j < n; j++) {
+					obj.addTerm(distMatrix[i][j], x[i][j]);
+				}
+			}
+			model.addMinimize(obj);
+			
+			// Add the constraints
+			// Each row sums up to 1
+			for(int i = 0; i < n; i++) {
+				IloLinearNumExpr rowSum = model.linearNumExpr();
+				for(int j = 0; j < n; j++) {
+					rowSum.addTerm(1, x[i][j]);
+				}
+				model.addEq(rowSum, 1);
+			}
+			// Each column sums up to 1
+			for(int i = 0; i < n; i++) {
+				IloLinearNumExpr colSum = model.linearNumExpr();
+				for(int j = 0; j < n; j++) {
+					colSum.addTerm(1, x[j][i]);
+				}
+				model.addEq(colSum, 1);
+			}
+			// The assignment is symmetrical
+			for(int i = 0; i < n; i++) {
+				for(int j = 0; j < n; j++) {
+					if(i != j) {
+						IloLinearNumExpr numExpr = model.linearNumExpr();
+						numExpr.addTerm(1, x[i][j]);
+						model.addEq(numExpr, x[j][i]);
+					}
+				}
+			}
+			
+			// Suppress the output printout
+			model.setParam(IloCplex.IntParam.SimDisplay, 0);
+			// Solve the model
+			boolean isSolved = model.solve();
+			if(isSolved) {
+				double objValue = model.getObjValue();
+				System.out.println("obj_val = " + objValue);
+				
+				for(int i = 0; i < n; i++) {
+					for(int j = 0; j < n; j++) {
+						assignment[i][j] = (int) model.getValue(x[i][j]);
+					}
+				}
+			} else {
+				System.out.println("Model not solved :(");
+			}
+		} catch(IloException ex) {
+			ex.printStackTrace();
+		}
+		
+		return assignment;
 	}
 }
