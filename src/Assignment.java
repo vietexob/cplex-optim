@@ -18,7 +18,7 @@ import ilog.cplex.*;
 public class Assignment {
 
 	public static void main(String[] args) {
-		Integer[] num_taxis = {5, 10, 20, 25};
+		Integer[] num_taxis = {5, 10, 20, 50, 100};
 		for(int a_num_taxi : num_taxis) {
 			String inputFilename = "./data/sin/dist_mat_" + a_num_taxi + "_" + a_num_taxi + ".csv";
 			Map<Integer, Integer> rowNodeIdx = new HashMap<Integer, Integer>();
