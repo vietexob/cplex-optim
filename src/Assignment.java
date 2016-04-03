@@ -135,15 +135,16 @@ public class Assignment {
 				model.addEq(colSum, 1);
 			}
 			// The assignment is symmetrical
-			for(int i = 0; i < n; i++) {
-				for(int j = 0; j < n; j++) {
-					if(i != j) {
-						IloLinearNumExpr numExpr = model.linearNumExpr();
-						numExpr.addTerm(1, x[i][j]);
-						model.addEq(numExpr, x[j][i]);
-					}
-				}
-			}
+			// NOTE: This is incorrect!
+//			for(int i = 0; i < n; i++) {
+//				for(int j = 0; j < n; j++) {
+//					if(i != j) {
+//						IloLinearNumExpr numExpr = model.linearNumExpr();
+//						numExpr.addTerm(1, x[i][j]);
+//						model.addEq(numExpr, x[j][i]);
+//					}
+//				}
+//			}
 			
 			// Suppress the output printout
 			model.setParam(IloCplex.IntParam.SimDisplay, 0);
