@@ -17,9 +17,12 @@ import ilog.cplex.*;
  */
 public class Assignment {
 	public static void main(String[] args) {
-		Integer[] num_taxis = {5, 10, 20, 50, 100};
+//		Integer[] num_taxis = {5, 10, 20, 50, 100};
+		Integer[] num_taxis = {10, 13, 16};
 		for(int a_num_taxi : num_taxis) {
-			String inputFilename = "./data/sin/dist_mat_" + a_num_taxi + "_" + a_num_taxi + ".csv";
+//			String dirStr = "./data/sin/training/dist_mat_";
+			String dirStr = "./data/sin/test/dist_mat_";
+			String inputFilename = dirStr + a_num_taxi + "_" + a_num_taxi + ".csv";
 			Map<Integer, Integer> rowNodeIdx = new HashMap<Integer, Integer>();
 			Map<Integer, Integer> colNodeIdx = new HashMap<Integer, Integer>();
 			double[][] distMatrix = new double[a_num_taxi][a_num_taxi];
@@ -77,7 +80,9 @@ public class Assignment {
 				}
 				
 				// Write the matching as text file
-				String outputFilename = "./data/sin/assign_" + a_num_taxi + "_" + a_num_taxi + ".txt";
+//				dirStr = "./data/sin/training/assign_";
+				dirStr = "./data/sin/test/assign_";
+				String outputFilename = dirStr + a_num_taxi + "_" + a_num_taxi + ".txt";
 				FileWriter fw = new FileWriter(outputFilename);
 				for(int taxiNode : taxiLocOrigin.keySet()) {
 					int originNode = taxiLocOrigin.get(taxiNode);
