@@ -18,7 +18,7 @@ import ilog.cplex.*;
 public class Assignment {
 	public static void main(String[] args) {
 //		Integer[] num_taxis = {5, 10, 20, 50, 100};
-		Integer[] num_taxis = {10, 13, 16};
+		Integer[] num_taxis = {30, 50};
 		for(int a_num_taxi : num_taxis) {
 //			String dirStr = "./data/sin/training/dist_mat_";
 			String dirStr = "./data/sin/test/dist_mat_";
