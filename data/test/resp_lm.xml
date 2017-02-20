@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<PMML version="4.2" xmlns="http://www.dmg.org/PMML-4_2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.dmg.org/PMML-4_2 http://www.dmg.org/v4-2/pmml-4-2.xsd">
+ <Header copyright="Copyright (c) 2017 trucvietle" description="Linear Regression Model">
+  <Extension name="user" value="trucvietle" extender="RR/PMML"/>
+  <Application name="RR/PMML" version="1.4"/>
+  <Timestamp>2017-02-20 17:25:21</Timestamp>
+ </Header>
+ <DataDictionary numberOfFields="6">
+  <DataField name="resp" optype="continuous" dataType="double"/>
+  <DataField name="traffic_travel_time" optype="continuous" dataType="double"/>
+  <DataField name="mean_resp_time" optype="continuous" dataType="double"/>
+  <DataField name="is_urgent" optype="continuous" dataType="double"/>
+  <DataField name="num_cars" optype="continuous" dataType="double"/>
+  <DataField name="cross_npc" optype="continuous" dataType="double"/>
+ </DataDictionary>
+ <RegressionModel modelName="ResponseTimePredictionLM" functionName="regression" algorithmName="least squares">
+  <MiningSchema>
+   <MiningField name="resp" usageType="predicted"/>
+   <MiningField name="traffic_travel_time" usageType="active"/>
+   <MiningField name="mean_resp_time" usageType="active"/>
+   <MiningField name="is_urgent" usageType="active"/>
+   <MiningField name="num_cars" usageType="active"/>
+   <MiningField name="cross_npc" usageType="active"/>
+  </MiningSchema>
+  <Output>
+   <OutputField name="Predicted_resp" feature="predictedValue"/>
+  </Output>
+  <RegressionTable intercept="4.69486152207446">
+   <NumericPredictor name="traffic_travel_time" exponent="1" coefficient="12.6341570613331"/>
+   <NumericPredictor name="mean_resp_time" exponent="1" coefficient="33.3515233104788"/>
+   <NumericPredictor name="is_urgent" exponent="1" coefficient="-0.300568787509089"/>
+   <NumericPredictor name="num_cars" exponent="1" coefficient="-81.1667007450041"/>
+   <NumericPredictor name="cross_npc" exponent="1" coefficient="0.783195856231071"/>
+  </RegressionTable>
+ </RegressionModel>
+</PMML>
