@@ -24,5 +24,10 @@
   		<artifactId>pmml-evaluator</artifactId>
   		<version>1.3.4</version>
   	</dependency>
+  	<dependency>
+  		<groupId>cplex</groupId>
+  		<artifactId>cplex</artifactId>
+  		<version>12.6.2</version>
+  	</dependency>
   </dependencies>
 </project>
