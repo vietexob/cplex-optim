@@ -45,7 +45,7 @@ public class TestPMML {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		String modelFilename = "./data/test/resp_lm.xml";
+		String modelFilename = "./data/test/test_resp_lm.xml";
 		PMML pmml = loadModel(modelFilename);
 		
 		ModelEvaluator<RegressionModel> modelEvaluator = new RegressionModelEvaluator(pmml);
