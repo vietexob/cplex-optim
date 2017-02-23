@@ -1,36 +1,84 @@
-<?xml version="1.0"?>
-<PMML version="4.2" xmlns="http://www.dmg.org/PMML-4_2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.dmg.org/PMML-4_2 http://www.dmg.org/v4-2/pmml-4-2.xsd">
- <Header copyright="Copyright (c) 2017 trucvietle" description="Linear Regression Model">
-  <Extension name="user" value="trucvietle" extender="RR/PMML"/>
-  <Application name="RR/PMML" version="1.4"/>
-  <Timestamp>2017-02-20 17:25:21</Timestamp>
- </Header>
- <DataDictionary numberOfFields="6">
-  <DataField name="resp" optype="continuous" dataType="double"/>
-  <DataField name="traffic_travel_time" optype="continuous" dataType="double"/>
-  <DataField name="mean_resp_time" optype="continuous" dataType="double"/>
-  <DataField name="is_urgent" optype="continuous" dataType="double"/>
-  <DataField name="num_cars" optype="continuous" dataType="double"/>
-  <DataField name="cross_npc" optype="continuous" dataType="double"/>
- </DataDictionary>
- <RegressionModel modelName="ResponseTimePredictionLM" functionName="regression" algorithmName="least squares">
-  <MiningSchema>
-   <MiningField name="resp" usageType="predicted"/>
-   <MiningField name="traffic_travel_time" usageType="active"/>
-   <MiningField name="mean_resp_time" usageType="active"/>
-   <MiningField name="is_urgent" usageType="active"/>
-   <MiningField name="num_cars" usageType="active"/>
-   <MiningField name="cross_npc" usageType="active"/>
-  </MiningSchema>
-  <Output>
-   <OutputField name="Predicted_resp" feature="predictedValue"/>
-  </Output>
-  <RegressionTable intercept="4.69486152207446">
-   <NumericPredictor name="traffic_travel_time" exponent="1" coefficient="12.6341570613331"/>
-   <NumericPredictor name="mean_resp_time" exponent="1" coefficient="33.3515233104788"/>
-   <NumericPredictor name="is_urgent" exponent="1" coefficient="-0.300568787509089"/>
-   <NumericPredictor name="num_cars" exponent="1" coefficient="-81.1667007450041"/>
-   <NumericPredictor name="cross_npc" exponent="1" coefficient="0.783195856231071"/>
-  </RegressionTable>
- </RegressionModel>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<PMML xmlns="http://www.dmg.org/PMML-4_3" version="4.3">
+	<Header>
+		<Application name="JPMML-SkLearn" version="1.2.1"/>
+		<Timestamp>2017-02-23T09:17:28Z</Timestamp>
+	</Header>
+	<MiningBuildTask>
+		<Extension>PMMLPipeline(steps=[('mapper', DataFrameMapper(default=False,
+        features=[(['traffic_travel_time', 'mean_resp_time', 'is_urgent', 'num_cars', 'cross_npc', 'hours'], TransformerPipeline(steps=[('continuousdomain', ContinuousDomain(invalid_value_treatment='return_invalid')), ('minmaxscaler', MinMaxScaler(copy=True, feature_range=(0, 1)))]))],
+        sparse=False)), ('regression', LinearRegression(copy_X=True, fit_intercept=True, n_jobs=1, normalize=False))])</Extension>
+	</MiningBuildTask>
+	<DataDictionary>
+		<DataField name="resp_time" optype="continuous" dataType="double"/>
+		<DataField name="traffic_travel_time" optype="continuous" dataType="double">
+			<Interval closure="closedClosed" leftMargin="0.0" rightMargin="50.0"/>
+		</DataField>
+		<DataField name="mean_resp_time" optype="continuous" dataType="double">
+			<Interval closure="closedClosed" leftMargin="1.0" rightMargin="48.0"/>
+		</DataField>
+		<DataField name="is_urgent" optype="continuous" dataType="double">
+			<Interval closure="closedClosed" leftMargin="0.0" rightMargin="1.0"/>
+		</DataField>
+		<DataField name="num_cars" optype="continuous" dataType="double">
+			<Interval closure="closedClosed" leftMargin="1.0" rightMargin="39.0"/>
+		</DataField>
+		<DataField name="cross_npc" optype="continuous" dataType="double">
+			<Interval closure="closedClosed" leftMargin="0.0" rightMargin="1.0"/>
+		</DataField>
+		<DataField name="hours" optype="continuous" dataType="double">
+			<Interval closure="closedClosed" leftMargin="0.0" rightMargin="23.0"/>
+		</DataField>
+	</DataDictionary>
+	<TransformationDictionary>
+		<DerivedField name="min_max_scaler(traffic_travel_time)" optype="continuous" dataType="double">
+			<Apply function="*">
+				<FieldRef field="traffic_travel_time"/>
+				<Constant dataType="double">0.02</Constant>
+			</Apply>
+		</DerivedField>
+		<DerivedField name="min_max_scaler(mean_resp_time)" optype="continuous" dataType="double">
+			<Apply function="+">
+				<Apply function="*">
+					<FieldRef field="mean_resp_time"/>
+					<Constant dataType="double">0.02127659574468085</Constant>
+				</Apply>
+				<Constant dataType="double">-0.02127659574468085</Constant>
+			</Apply>
+		</DerivedField>
+		<DerivedField name="min_max_scaler(num_cars)" optype="continuous" dataType="double">
+			<Apply function="+">
+				<Apply function="*">
+					<FieldRef field="num_cars"/>
+					<Constant dataType="double">0.02631578947368421</Constant>
+				</Apply>
+				<Constant dataType="double">-0.02631578947368421</Constant>
+			</Apply>
+		</DerivedField>
+		<DerivedField name="min_max_scaler(hours)" optype="continuous" dataType="double">
+			<Apply function="*">
+				<FieldRef field="hours"/>
+				<Constant dataType="double">0.043478260869565216</Constant>
+			</Apply>
+		</DerivedField>
+	</TransformationDictionary>
+	<RegressionModel functionName="regression">
+		<MiningSchema>
+			<MiningField name="resp_time" usageType="target"/>
+			<MiningField name="traffic_travel_time"/>
+			<MiningField name="mean_resp_time"/>
+			<MiningField name="is_urgent"/>
+			<MiningField name="num_cars"/>
+			<MiningField name="cross_npc"/>
+			<MiningField name="hours"/>
+		</MiningSchema>
+		<RegressionTable intercept="4.186909089550516">
+			<NumericPredictor name="min_max_scaler(traffic_travel_time)" coefficient="4.497174048258554"/>
+			<NumericPredictor name="min_max_scaler(mean_resp_time)" coefficient="27.55962680997547"/>
+			<NumericPredictor name="is_urgent" coefficient="-0.24418566779208234"/>
+			<NumericPredictor name="min_max_scaler(num_cars)" coefficient="-89.22210024985684"/>
+			<NumericPredictor name="cross_npc" coefficient="0.33306709034922904"/>
+			<NumericPredictor name="min_max_scaler(hours)" coefficient="-0.06765305005765039"/>
+		</RegressionTable>
+	</RegressionModel>
 </PMML>
