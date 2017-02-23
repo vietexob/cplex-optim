@@ -11,8 +11,10 @@ public class TestPMML {
 	// Test reading a trained model saved as PMML into a Java program and do prediction.
 	
 	public static void main(String[] args) throws Exception {
-		String modelFilename = "./data/test/resp_lm.xml";
-		int modelChoice = 0;
+//		String modelFilename = "./data/test/resp_lm.xml";
+//		int modelChoice = 0;
+		String modelFilename = "./data/test/resp_svm.xml";
+		int modelChoice = 1;
 		PredictionModel myModel = new PredictionModel(modelFilename, modelChoice);
 		
 		String testFilename = "./data/test/test_response.csv";
