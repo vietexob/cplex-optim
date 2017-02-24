@@ -13,6 +13,7 @@ import org.dmg.pmml.FieldName;
 import org.dmg.pmml.PMML;
 import org.dmg.pmml.regression.RegressionModel;
 import org.dmg.pmml.support_vector_machine.SupportVectorMachineModel;
+import org.dmg.pmml.tree.TreeModel;
 import org.jpmml.evaluator.Evaluator;
 import org.jpmml.evaluator.FieldValue;
 import org.jpmml.evaluator.InputField;
@@ -20,6 +21,7 @@ import org.jpmml.evaluator.ModelEvaluator;
 import org.jpmml.evaluator.TargetField;
 import org.jpmml.evaluator.regression.RegressionModelEvaluator;
 import org.jpmml.evaluator.support_vector_machine.SupportVectorMachineModelEvaluator;
+import org.jpmml.evaluator.tree.TreeModelEvaluator;
 import org.jpmml.model.ImportFilter;
 import org.jpmml.model.JAXBUtil;
 import org.xml.sax.InputSource;
@@ -43,9 +45,15 @@ public class PredictionModel {
 		if(modelChoice == 0) { // linear regression
 			ModelEvaluator<RegressionModel> modelEvaluator = new RegressionModelEvaluator(pmml);
 			evaluator = (Evaluator) modelEvaluator;
-		} else { // SVM regression
+		} else if(modelChoice == 1) { // SVM regression
 			ModelEvaluator<SupportVectorMachineModel> modelEvaluator = new SupportVectorMachineModelEvaluator(pmml);
 			evaluator = (Evaluator) modelEvaluator;
+		} else if(modelChoice == 2) { // gradient boosting regression
+			ModelEvaluator<TreeModel> modelEvaluator = new TreeModelEvaluator(pmml);
+			evaluator = (Evaluator) modelEvaluator;
+		} else {
+			System.out.println("ERROR: Invalid model choice!");
+			System.exit(0);
 		}
 	}
 	
@@ -88,9 +96,6 @@ public class PredictionModel {
 		for(TargetField targetField : targetFields) {
 			FieldName targetFieldName = targetField.getName();
 			Double targetFieldValue = (Double) results.get(targetFieldName);
-			if(targetFieldValue < 1.0) {
-				targetFieldValue = 1.0;
-			}
 			prediction = targetFieldValue;
 		}
 		
