@@ -13,7 +13,9 @@ import org.dmg.pmml.FieldName;
 import org.dmg.pmml.PMML;
 import org.dmg.pmml.regression.RegressionModel;
 import org.dmg.pmml.support_vector_machine.SupportVectorMachineModel;
-import org.dmg.pmml.tree.TreeModel;
+//import org.dmg.pmml.tree.TreeModel;
+import org.dmg.pmml.mining.MiningModel;
+
 import org.jpmml.evaluator.Evaluator;
 import org.jpmml.evaluator.FieldValue;
 import org.jpmml.evaluator.InputField;
@@ -21,7 +23,9 @@ import org.jpmml.evaluator.ModelEvaluator;
 import org.jpmml.evaluator.TargetField;
 import org.jpmml.evaluator.regression.RegressionModelEvaluator;
 import org.jpmml.evaluator.support_vector_machine.SupportVectorMachineModelEvaluator;
-import org.jpmml.evaluator.tree.TreeModelEvaluator;
+//import org.jpmml.evaluator.tree.TreeModelEvaluator;
+import org.jpmml.evaluator.mining.MiningModelEvaluator;
+
 import org.jpmml.model.ImportFilter;
 import org.jpmml.model.JAXBUtil;
 import org.xml.sax.InputSource;
@@ -49,7 +53,8 @@ public class PredictionModel {
 			ModelEvaluator<SupportVectorMachineModel> modelEvaluator = new SupportVectorMachineModelEvaluator(pmml);
 			evaluator = (Evaluator) modelEvaluator;
 		} else if(modelChoice == 2) { // gradient boosting regression
-			ModelEvaluator<TreeModel> modelEvaluator = new TreeModelEvaluator(pmml);
+//			ModelEvaluator<TreeModel> modelEvaluator = new TreeModelEvaluator(pmml);
+			ModelEvaluator<MiningModel> modelEvaluator = new MiningModelEvaluator(pmml);
 			evaluator = (Evaluator) modelEvaluator;
 		} else {
 			System.out.println("ERROR: Invalid model choice!");
