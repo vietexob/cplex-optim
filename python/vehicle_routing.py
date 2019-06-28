@@ -1,10 +1,12 @@
+import sys
 import numpy as np
+
 from docplex.mp.model import Model
 
 def generate_input(filename='vrp_input.txt'):
 	# Number of customers: Random integer in [10, 20]
 	n = np.random.randint(10, 21)
-	# Number of vehicles: Random integer from [5, 10]
+	# Number of vehicles: Random integer in [5, 10]
 	K = np.random.randint(5, 11)
 	# Vehicle capacity: Random integer in [10, 20]
 	Q = np.random.randint(10, 21)
@@ -88,7 +90,12 @@ def get_routes(active_edges):
 	return list_routes
 
 if __name__ == '__main__':
-	generate_input()
+	# generate_input()
+	if len(sys.argv) > 1:
+		filename = sys.argv[1]
+	else:
+		filename = 'vrp_input.txt'
+
 	n, K, Q, list_demands, list_coord_x, list_coord_y = read_input()
 	C = [i for i in range(1, n+1)] # set of customers
 	V = [0] + C # set of vertices, including the depot at node 0
